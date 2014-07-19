@@ -20,8 +20,8 @@ import com.google.ads.AdRequest;
 import com.google.ads.AdSize;
 import com.google.ads.AdView;
 
-public class View extends TiUIView implements AdListener {
-	private static final String LCAT = "AdMobView";
+public class InterstitialAdView extends TiUIView implements AdListener {
+	private static final String LCAT = "InterstitialAdView";
 	AdView adView;
 	int prop_top;
 	int prop_left;
@@ -32,13 +32,8 @@ public class View extends TiUIView implements AdListener {
 	String prop_color_text;
 	String prop_color_link;
 	String prop_color_url;
-	
-	private final static int BANNER = 0;
-	private final static int IAB_BANNER = 1;
-	private final static int IAB_LEADERBOARD = 2;
-	private final static int IAB_MRECT = 3;
 
-	public View(final TiViewProxy proxy) {
+	public InterstitialAdView(final TiViewProxy proxy) {
 		super(proxy);
 		Log.d(LCAT, "Creating an adMob ad view");
 		// get the publisher id that was set in the module
@@ -48,25 +43,7 @@ public class View extends TiUIView implements AdListener {
 	private void createAdView() {
 		Log.d(LCAT, "createAdView()");
 		// create the adView
-		AdSize size = AdSize.BANNER;
-		switch (AdmobModule.KIND_AD) {
-		case IAB_LEADERBOARD:
-			size = AdSize.IAB_LEADERBOARD;
-			break;
-		case IAB_MRECT:
-			size = AdSize.IAB_MRECT;
-			break;
-		case IAB_BANNER:
-			size = AdSize.IAB_BANNER;
-			break;
-
-		default:
-			size = AdSize.BANNER;
-
-			break;
-		}
-		
-		adView = new AdView(proxy.getActivity(), size, AdmobModule.PUBLISHER_ID);
+		adView = new AdView(proxy.getActivity(), AdSize.BANNER, AdmobModule.PUBLISHER_ID);
 		loadAd(AdmobModule.TESTING);
 		// set the listener
 		adView.setAdListener(this);
@@ -94,10 +71,6 @@ public class View extends TiUIView implements AdListener {
 	public void processProperties(KrollDict d) {
 		super.processProperties(d);
 		Log.d(LCAT, "process properties");
-		if (d.containsKey("kindAd")) {
-			Log.d(LCAT, "has getInt" + d.getInt("kindAd"));
-			AdmobModule.KIND_AD = d.getInt("kindAd");
-		}
 		if (d.containsKey("publisherId")) {
 			Log.d(LCAT, "has publisherId: " + d.getString("publisherId"));
 			AdmobModule.PUBLISHER_ID = d.getString("publisherId");
