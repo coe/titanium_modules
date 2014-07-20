@@ -8,20 +8,22 @@ package ti.admob;
 
 import org.appcelerator.kroll.KrollDict;
 import org.appcelerator.kroll.annotations.Kroll;
+import org.appcelerator.kroll.common.Log;
 import org.appcelerator.titanium.TiContext.OnLifecycleEvent;
 import org.appcelerator.titanium.proxy.TiViewProxy;
-import org.appcelerator.kroll.common.Log;
 import org.appcelerator.titanium.view.TiUIView;
 
 import android.app.Activity;
 
 @Kroll.proxy(creatableInModule = AdmobModule.class)
-public class InterstitialAdViewProxy extends TiViewProxy implements OnLifecycleEvent {
-	private InterstitialAdView adMob;
-	private static final String LCAT = "AdMobViewProxy";
+public class InterstitialProxy extends TiViewProxy implements OnLifecycleEvent {
+	private Interstitial adMob;
+	private static final String LCAT = "InterstitialAdViewProxy";
 
-	public InterstitialAdViewProxy() {
+	public InterstitialProxy() {
 		super();
+		Log.d(LCAT, "InterstitialProxy");
+		createView(null);
 	}
 
 	@Override
@@ -33,20 +35,9 @@ public class InterstitialAdViewProxy extends TiViewProxy implements OnLifecycleE
 
 	@Override
 	public TiUIView createView(Activity activity) {
-		adMob = new InterstitialAdView(this);
+		Log.d(LCAT, "Creating an InterstitialAdView ad view");
+		adMob = new Interstitial(this);
 		return adMob;
-	}
-
-	@Kroll.method
-	public void requestAd() {
-		Log.d(LCAT, "requestAd()");
-		adMob.requestAd();
-	}
-
-	@Kroll.method
-	public void requestTestAd() {
-		Log.d(LCAT, "requestTestAd(): ");
-		adMob.requestTestAd();
 	}
 
 	@Override
@@ -68,6 +59,12 @@ public class InterstitialAdViewProxy extends TiViewProxy implements OnLifecycleE
 
 	@Override
 	public void onStop(Activity activity) {
+	}
+	
+	
+	@Kroll.method 
+	public void callAd(){
+		adMob.callAd();
 	}
 
 }

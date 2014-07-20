@@ -33,6 +33,7 @@ public class ViewProxy extends TiViewProxy implements OnLifecycleEvent {
 
 	@Override
 	public TiUIView createView(Activity activity) {
+		Log.d(LCAT, "Creating an createView ad view");
 		adMob = new View(this);
 		return adMob;
 	}
